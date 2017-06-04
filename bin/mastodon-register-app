@@ -1,47 +1,51 @@
 #!/usr/bin/env node
 'use strict'  //  -*- mode: javascript -*- 
 
-const cmd = require('commander')
-const pkg = require('../package.json')
 const fs = require('fs')
+const Tilda = require('tilda')
+const pkg = require('../package.json')
 const register = require('..')
 
-cmd
-  .version(pkg.version)
-  .option('-s, --server <domain>', 'URL or domain name of server')
-  .option('-a, --appname <name>', 'Arbitrary but unique app name')
-  .option('-u, --url [url]', 'Web address of app, if any')
-  .parse(process.argv)
+new Tilda({
+  name: 'mastodon-register-app',
+  version: pkg.version,
+  description: pkg.description,
+  examples: [
+    'mastodon-register-app mastodon.social "Sandro\'s Ultra Super Bot"'
+  ],
+  args: [
+    { name: 'server', type: 'string', desc: 'Domain name or URL of server' },
+    { name: 'appname', type: 'string', desc: 'Unique name of your app' }
+  ]
+}).main(action => {
+  let server = action.args.server
+  let appname = action.args.appname
 
-if (!cmd.server) {
-  cmd.help()
-}
-if (!cmd.appname) {
-  cmd.help()
-}
-
-if (!cmd.server.startsWith('http')) {
-  cmd.server = 'https://' + cmd.server
-}
-
-const filename = cmd.appname + '-registration.json'
-
-fs.access(filename, fs.constants.R_OK, err => {
-  if (err === null) {
-    console.log('already registered? File exists:', filename)
-  } else if (err.code === 'ENOENT') {
-    register(cmd.server, cmd.appname, cmd.url)
-      .then(data => {
-        data.appname = cmd.appname
-        data.appurl = cmd.url
-        fs.writeFile(filename, JSON.stringify(data, null, 2), (err) => {
-          if (err) throw err
-          console.log(filename, 'written')
-        })
-      })
-  } else {
-    throw err
+  if (!server.startsWith('http')) {
+    server = 'https://' + server
   }
+
+  const filename = 'app-registration.json'
+
+  fs.access(filename, fs.constants.R_OK, err => {
+    if (err === null) {
+      console.log('already registered? File exists:', filename)
+    } else if (err.code === 'ENOENT') {
+      register(server, appname)
+        .then(data => {
+          data.appname = appname
+          // data.appurl = url
+          fs.writeFile(filename, JSON.stringify(data, null, 2), (err) => {
+            if (err) throw err
+            console.log(filename, 'written')
+          })
+        })
+    } else {
+      throw err
+    }
+  })
 })
+
+
 
 
