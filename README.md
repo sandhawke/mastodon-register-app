@@ -15,5 +15,17 @@ $ cat app-registration.json
 }
 ```
 
-You can use it as a libtrary, too, but I'm not sure why you'd want to
-register a lot of different apps.
+You can use it as a libtrary, too.
+
+```sh
+$ npm install --save mastodon-register-app
+```
+
+```js
+const register = require('register')
+
+register('https://server.example', 'My Amazing App)
+  .then(reg => {
+     // use reg.secret and reg.id
+  })
+```
