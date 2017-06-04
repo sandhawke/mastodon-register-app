@@ -1,0 +1,16 @@
+{
+  "name": "mastodon-register-app",
+  "version": "0.0.1",
+  "description": "Do the little oauth dance to register an app",
+  "main": "index.js",
+  "bin": "bin/mastodon-register-app",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sandro Hawke (http://hawke.org/sandro)",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "tilda": "^4.4.10"
+  }
+}
