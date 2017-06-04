@@ -15,14 +15,15 @@ $ cat app-registration.json
 }
 ```
 
-You can use it as a libtrary, too.
+## Library usage
+
 
 ```sh
 $ npm install --save mastodon-register-app
 ```
 
 ```js
-const register = require('register')
+const register = require('mastodon-register-app')
 
 register('https://server.example', 'My Amazing App')
   .then(reg => {
