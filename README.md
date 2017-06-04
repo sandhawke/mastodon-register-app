@@ -24,7 +24,7 @@ $ npm install --save mastodon-register-app
 ```js
 const register = require('register')
 
-register('https://server.example', 'My Amazing App)
+register('https://server.example', 'My Amazing App')
   .then(reg => {
      // use reg.secret and reg.id
   })
